@@ -23,12 +23,12 @@ export const asyncRouterMap = [
         component: RouteView,
         meta: { title: 'menu.dashboard', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
         children: [
-          {
-            path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
-            name: 'Analysis',
-            component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: 'menu.dashboard.analysis', keepAlive: false, permission: ['dashboard'] }
-          },
+          // {
+          //   path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
+          //   name: 'Analysis',
+          //   component: () => import('@/views/dashboard/Analysis'),
+          //   meta: { title: 'menu.dashboard.analysis', keepAlive: false, permission: ['dashboard'] }
+          // },
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
@@ -261,14 +261,12 @@ export const asyncRouterMap = [
             ]
           }
         ]
-      }
-
+      },
       // other
-      /*
       {
         path: '/other',
         name: 'otherPage',
-        component: PageView,
+        component: RouteView,
         meta: { title: '其他组件', icon: 'slack', permission: [ 'dashboard' ] },
         redirect: '/other/icon-selector',
         children: [
@@ -324,7 +322,6 @@ export const asyncRouterMap = [
           }
         ]
       }
-      */
     ]
   },
   {
@@ -342,13 +339,35 @@ export const constantRouterMap = [
   {
     path: '/user',
     component: UserLayout,
-    redirect: '/user/login',
+    redirect: '/user/login/course',
     hidden: true,
     children: [
       {
         path: 'login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login'),
+        children: [
+          {
+            path: 'learn',
+            name: 'learn',
+            component: () => import('@/views/user/Learn')
+          },
+          {
+            path: 'course',
+            name: 'course',
+            component: () => import('@/views/user/Course')
+          },
+          {
+            path: 'news',
+            name: 'news',
+            component: () => import('@/views/user/News')
+          },
+          {
+            path: 'personCenter',
+            name: 'personCenter',
+            component: () => import('@/views/user/PersonCenter')
+          }
+        ]
       },
       {
         path: 'register',

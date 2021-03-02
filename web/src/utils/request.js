@@ -4,6 +4,7 @@ import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import message from 'ant-design-vue/es/message'
 
 // 创建 axios 实例
 const request = axios.create({
@@ -47,13 +48,30 @@ request.interceptors.request.use(config => {
   // 如果 token 存在
   // 让每个请求携带自定义 token 请根据实际情况自行修改
   if (token) {
-    config.headers['Access-Token'] = token
+    config.headers['Authorization'] = `Bearer ${token}`
   }
   return config
 }, errorHandler)
 
 // response interceptor
 request.interceptors.response.use((response) => {
+  const token = storage.get(ACCESS_TOKEN)
+  const res = response.data
+  if (res.code && res.code !== 200) {
+    if (res.statusCode === 401) {
+      message.error({ message: '登录失效,请重新登录' })
+      if (token) {
+        store.dispatch('Logout').then(() => {
+          setTimeout(() => {
+            window.location.reload()
+          }, 1500)
+        })
+      }
+    } else {
+      message.error(res.msg)
+    }
+    return Promise.reject(new Error(res.msg || '系统发生错误'))
+  }
   return response.data
 }, errorHandler)
 

@@ -3,26 +3,26 @@
     <template v-slot:content>
       <div class="page-header-content">
         <div class="avatar">
-          <a-avatar size="large" :src="currentUser.avatar"/>
+          <a-avatar size="large" :src="user.avatar"/>
         </div>
         <div class="content">
           <div class="content-title">
             {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
           </div>
-          <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
+          <div>士志于道，而耻恶衣恶食者，未足与议也。</div>
         </div>
       </div>
     </template>
     <template v-slot:extraContent>
       <div class="extra-content">
         <div class="stat-item">
-          <a-statistic title="项目数" :value="56" />
+          <a-statistic title="课程数" :value="56" />
         </div>
         <div class="stat-item">
-          <a-statistic title="团队内排名" :value="8" suffix="/ 24" />
+          <a-statistic title="已学习" :value="8" suffix="/ 24" />
         </div>
         <div class="stat-item">
-          <a-statistic title="项目访问" :value="2223" />
+          <a-statistic title="学习人员" :value="2223" />
         </div>
       </div>
     </template>
@@ -195,12 +195,7 @@ export default {
       nickname: (state) => state.user.nickname,
       welcome: (state) => state.user.welcome
     }),
-    currentUser () {
-      return {
-        name: 'Serati Ma',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
-      }
-    },
+    ...mapState(['user']),
     userInfo () {
       return this.$store.getters.userInfo
     }

@@ -90,8 +90,8 @@ const vueConfig = {
         modifyVars: {
           // less vars，customize ant design theme
 
-          // 'primary-color': '#F5222D',
-          // 'link-color': '#F5222D',
+          'primary-color': '#722ED1',
+          'link-color': '#722ED1',
           'border-radius-base': '2px'
         },
         // DO NOT REMOVE THIS LINE
@@ -102,7 +102,7 @@ const vueConfig = {
 
   devServer: {
     // development server port 8000
-    port: 8000
+    port: 1234
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     // proxy: {
     //   '/api': {

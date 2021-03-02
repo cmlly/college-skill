@@ -11,6 +11,7 @@ const userApi = {
   // get my info
   UserInfo: '/user/info',
   UserMenu: '/user/nav'
+
 }
 
 /**
@@ -21,14 +22,30 @@ const userApi = {
  *     remember_me: true,
  *     captcha: '12345'
  * }
- * @param parameter
+ * @param data
  * @returns {*}
  */
-export function login (parameter) {
+export function login (data) {
   return request({
-    url: userApi.Login,
+    url: 'api/user/login',
     method: 'post',
-    data: parameter
+    data
+  })
+}
+
+export function fetchRegister (data) {
+  return request({
+    url: 'api/user/register',
+    method: 'post',
+    data
+  })
+}
+
+export function fetchEmailCode (data) {
+  return request({
+    url: 'api/user/getEmailCode',
+    method: 'post',
+    data
   })
 }
 
@@ -42,11 +59,8 @@ export function getSmsCaptcha (parameter) {
 
 export function getInfo () {
   return request({
-    url: userApi.UserInfo,
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    url: 'api/user/userInfo',
+    method: 'post'
   })
 }
 
@@ -60,10 +74,7 @@ export function getCurrentUserNav () {
 export function logout () {
   return request({
     url: userApi.Logout,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    method: 'post'
   })
 }
 

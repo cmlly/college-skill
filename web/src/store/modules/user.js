@@ -1,7 +1,328 @@
 import storage from 'store'
-import { login, getInfo, logout } from '@/api/login'
+import { login, getInfo } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
+import { message } from 'ant-design-vue'
+import router from '../../router'
+
+const permissions = [
+  {
+    'roleId': 'admin',
+    'permissionId': 'dashboard',
+    'permissionName': '仪表盘',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [
+      {
+        'action': 'add',
+        'describe': '新增',
+        'defaultCheck': false
+      },
+      {
+        'action': 'query',
+        'describe': '查询',
+        'defaultCheck': false
+      },
+      {
+        'action': 'get',
+        'describe': '详情',
+        'defaultCheck': false
+      },
+      {
+        'action': 'update',
+        'describe': '修改',
+        'defaultCheck': false
+      },
+      {
+        'action': 'delete',
+        'describe': '删除',
+        'defaultCheck': false
+      }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'exception',
+    'permissionName': '异常页面权限',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'query',
+      'describe': '查询',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'result',
+    'permissionName': '结果权限',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'query',
+      'describe': '查询',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'profile',
+    'permissionName': '详细页权限',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'query',
+      'describe': '查询',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'table',
+    'permissionName': '表格权限',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"import","defaultCheck":false,"describe":"导入"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'import',
+      'describe': '导入',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'form',
+    'permissionName': '表单权限',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'query',
+      'describe': '查询',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'order',
+    'permissionName': '订单管理',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'query',
+      'describe': '查询',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'permission',
+    'permissionName': '权限管理',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'support',
+    'permissionName': '角色管理',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'table',
+    'permissionName': '桌子管理',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'query',
+      'describe': '查询',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  },
+  {
+    'roleId': 'admin',
+    'permissionId': 'user',
+    'permissionName': '用户管理',
+    'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"import","defaultCheck":false,"describe":"导入"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"},{"action":"export","defaultCheck":false,"describe":"导出"}]',
+    'actionEntitySet': [{
+      'action': 'add',
+      'describe': '新增',
+      'defaultCheck': false
+    }, {
+      'action': 'import',
+      'describe': '导入',
+      'defaultCheck': false
+    }, {
+      'action': 'get',
+      'describe': '详情',
+      'defaultCheck': false
+    }, {
+      'action': 'update',
+      'describe': '修改',
+      'defaultCheck': false
+    }, {
+      'action': 'delete',
+      'describe': '删除',
+      'defaultCheck': false
+    }, {
+      'action': 'export',
+      'describe': '导出',
+      'defaultCheck': false
+    }],
+    'actionList': null,
+    'dataAccess': null
+  }
+]
 
 const user = {
   state: {
@@ -10,10 +331,13 @@ const user = {
     welcome: '',
     avatar: '',
     roles: [],
-    info: {}
+    info: {},
+    isLogin: false
   },
-
   mutations: {
+    SET_LOGIN: (state, isLogin) => {
+      state.isLogin = isLogin
+    },
     SET_TOKEN: (state, token) => {
       state.token = token
     },
@@ -40,6 +364,8 @@ const user = {
           const result = response.result
           storage.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
+          commit('SET_LOGIN', true)
+          localStorage.setItem('isLogin', true)
           resolve()
         }).catch(error => {
           reject(error)
@@ -52,17 +378,22 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const result = response.result
-
+          console.log(result)
+          result.role.permissions = permissions
           if (result.role && result.role.permissions.length > 0) {
             const role = result.role
             role.permissions = result.role.permissions
             role.permissions.map(per => {
               if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
-                const action = per.actionEntitySet.map(action => { return action.action })
+                const action = per.actionEntitySet.map(action => {
+                  return action.action
+                })
                 per.actionList = action
               }
             })
-            role.permissionList = role.permissions.map(permission => { return permission.permissionId })
+            role.permissionList = role.permissions.map(permission => {
+              return permission.permissionId
+            })
             commit('SET_ROLES', result.role)
             commit('SET_INFO', result)
           } else {
@@ -80,17 +411,16 @@ const user = {
     },
 
     // 登出
-    Logout ({ commit, state }) {
+    Logout ({ commit }) {
       return new Promise((resolve) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          storage.remove(ACCESS_TOKEN)
-          resolve()
-        }).catch(() => {
-          resolve()
-        }).finally(() => {
-        })
+        router.push('/user/login/course')
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        storage.remove(ACCESS_TOKEN)
+        commit('SET_LOGIN', false)
+        localStorage.removeItem('isLogin')
+        message.success('退出登录成功')
+        resolve()
       })
     }
 
