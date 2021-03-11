@@ -9,6 +9,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { RedisModule } from 'nestjs-redis'
 import { ArticleModule } from './logical/article/article.module';
 import { PublicModule } from './logical/public/public.module';
+import { CourseModule } from './logical/course/course.module';
 
 @Module({
   imports:
@@ -36,7 +37,8 @@ import { PublicModule } from './logical/public/public.module';
         db: 0
       }),
       ArticleModule,
-      PublicModule
+      PublicModule,
+      CourseModule
     ],
   controllers: [AppController, UserController],
   providers: [AppService],

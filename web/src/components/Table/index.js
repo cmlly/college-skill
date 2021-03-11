@@ -5,10 +5,8 @@ export default {
   data () {
     return {
       needTotalList: [],
-
       selectedRows: [],
       selectedRowKeys: [],
-
       localLoading: false,
       localDataSource: [],
       localPagination: Object.assign({}, this.pagination)
@@ -138,7 +136,7 @@ export default {
     loadData (pagination, filters, sorter) {
       this.localLoading = true
       const parameter = Object.assign({
-        pageNo: (pagination && pagination.current) ||
+        pageIndex: (pagination && pagination.current) ||
           this.showPagination && this.localPagination.current || this.pageNum,
         pageSize: (pagination && pagination.pageSize) ||
           this.showPagination && this.localPagination.pageSize || this.pageSize
@@ -159,7 +157,7 @@ export default {
         result.then(r => {
           this.localPagination = this.showPagination && Object.assign({}, this.localPagination, {
             current: r.pageNo, // 返回结果中的当前分页数
-            total: r.totalCount, // 返回结果中的总记录数
+            total: r.total, // 返回结果中的总记录数
             showSizeChanger: this.showSizeChanger,
             pageSize: (pagination && pagination.pageSize) ||
               this.localPagination.pageSize
@@ -233,7 +231,7 @@ export default {
     renderClear (callback) {
       if (this.selectedRowKeys.length <= 0) return null
       return (
-        <a style="margin-left: 24px" onClick={() => {
+        <a style="margin-left: 24px" onClick={ () => {
           callback()
           this.clearSelected()
         }}>清空</a>
@@ -258,9 +256,9 @@ export default {
       return (
         <a-alert showIcon={true} style="margin-bottom: 16px">
           <template slot="message">
-            <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{this.selectedRows.length}</a></span>
-            {needTotalItems}
-            {clearItem}
+            <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{this.selectedRows.length}</a> 个数据</span>
+             {needTotalItems}
+             {clearItem}
           </template>
         </a-alert>
       )

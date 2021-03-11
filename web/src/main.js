@@ -11,6 +11,7 @@ import { VueAxios } from './utils/request'
 import ProLayout, { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import themePluginConfig from '../config/themePluginConfig'
 import { FormModel } from 'ant-design-vue'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
 
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
@@ -20,8 +21,9 @@ import bootstrap from './core/bootstrap'
 import './core/lazy_use' // use lazy load components
 import './permission' // permission control
 import './utils/filter' // global filter
-import './global.less'
-Vue.use(FormModel) // global style
+import './global.less' // global style
+Vue.use(FormModel)
+Vue.use(VueAwesomeSwiper)
 
 Vue.config.productionTip = false
 

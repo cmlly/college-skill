@@ -25,8 +25,10 @@
     "moment": "^2.24.0",
     "nprogress": "^0.2.0",
     "store": "^2.0.12",
+    "swiper": "^6.5.0",
     "viser-vue": "^2.4.6",
     "vue": "^2.6.10",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-clipboard2": "^0.2.1",
     "vue-cropper": "0.4.9",
     "vue-i18n": "^8.17.4",
@@ -34,7 +36,7 @@
     "vue-router": "^3.1.2",
     "vue-svg-component-runtime": "^1.0.1",
     "vuex": "^3.1.1",
-    "wangeditor": "^3.1.1"
+    "wangeditor": "^4.6.8"
   },
   "devDependencies": {
     "@ant-design/colors": "^3.2.1",

@@ -10,7 +10,7 @@ import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const allowList = ['login', 'register', 'registerResult', 'learn', 'course', 'news'] // no redirect allowList
+const allowList = ['login', 'register', 'registerResult', 'learn', 'course', 'news', 'NewsDetail'] // no redirect allowList
 const loginRoutePath = '/user/login/course'
 // const defaultRoutePath = '/dashboard/workplace'
 

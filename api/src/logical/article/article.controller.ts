@@ -6,7 +6,7 @@ import { ArticleDto } from './article.dto';
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
-  @Post('add')
+  @Post('create')
   async addArticle(@Body() body: ArticleDto) {
     return await this.articleService.addArticle(body)
   }
@@ -29,5 +29,10 @@ export class ArticleController {
   @Post('delete')
   async deleteArticle(@Body() body: any) {
     return await this.articleService.deleteArticle(body)
+  }
+
+  @Post('classify')
+  async getClassify() {
+    return await this.articleService.articleClassify()
   }
 }

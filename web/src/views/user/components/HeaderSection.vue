@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header>
+    <header style="position: fixed;z-index: 10;width: 100%;">
       <div class="flex items-center">
         <img style="width: 40px;margin-right: 10px" src="@/assets/logo.png" alt="">
         <div style="font-size: 22px">大学生技能培训</div>
@@ -41,9 +41,10 @@
         </div>
       </div>
     </header>
-    <div style="padding: 50px 15vw 0;">
+    <div style="padding: 113px 15vw 25px">
       <router-view></router-view>
     </div>
+    <footer-section style="padding: 30px 15vw"></footer-section>
   </div>
 </template>
 
@@ -51,9 +52,11 @@
   import RegisterModal from '@/views/user/components/RegisterModal'
   import LoginModal from '@/views/user/components/LoginModal'
   import { mapState, mapActions } from 'vuex'
+  import FooterSection from '@/views/user/components/FooterSection'
   export default {
     name: 'HeaderSection',
     components: {
+      FooterSection,
       LoginModal,
       RegisterModal
     },

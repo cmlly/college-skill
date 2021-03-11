@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import sequelize from '../../database/sequelize';
 import * as Sequelize from 'sequelize';
-import QueryTypes from 'sequelize/types/lib/query-types';
 
 @Injectable()
 export class ArticleService {
   // 查询文章列表
   async articleList(body: any): Promise<any> {
-    const { pageIndex = 1, pageSize = 10 } = body;
+    const { pageIndex = 1, pageSize = 10  } = body;
     // 分页查询
     const currentIndex = ( pageIndex - 1 ) * pageSize < 0 ? 0 : ( pageIndex - 1 ) * pageSize;
     const sql = `
@@ -44,8 +43,10 @@ export class ArticleService {
     return {
       code: 200,
       result: {
-        list: articleList,
-        total: count.total
+        data: articleList,
+        total: count.total,
+        pageNo: pageIndex,
+        lastPageNo: Math.ceil(count.total / pageSize)
       },
       msg: '查询成功'
     }
@@ -69,7 +70,7 @@ export class ArticleService {
     }
   }
 
-  // 勘察文章详情
+  // 查看文章详情
   async articleDetail(body: any): Promise<any> {
     const { id } = body;
     const sql = `
@@ -108,8 +109,8 @@ export class ArticleService {
         WHERE
           id = ${id}
       `;
-    const transaction = await sequelize.transaction()
-    await sequelize.query(sql, { transaction, logging: false });
+    // const transaction = await sequelize.transaction()
+    await sequelize.query(sql, { logging: false });
     return {
       code: 200,
       msg: '编辑文章成功'
@@ -129,6 +130,29 @@ export class ArticleService {
     return {
       code: 200,
       msg: '删除成功'
+    }
+  }
+
+  // 文章分类接口
+  async articleClassify(): Promise<any> {
+    const sql =
+      `
+        SELECT
+          name
+        FROM
+          article_classify     
+      `;
+    const classify = await sequelize.query(sql, {
+      type: Sequelize.QueryTypes.SELECT,
+      raw: true,
+      logging: false
+    })
+    return {
+      code: 200,
+      result: {
+        classify
+      },
+      msg: '查询成功'
     }
   }
 

@@ -33,9 +33,54 @@ export const asyncRouterMap = [
             path: '/dashboard/workplace',
             name: 'Workplace',
             component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: 'menu.dashboard.workplace', keepAlive: true, permission: ['dashboard'] }
+            meta: { title: 'menu.dashboard.workplace', keepAlive: false, permission: ['dashboard'] }
           }
         ]
+      },
+      // 文章管理
+      {
+        path: '/article',
+        name: 'Article',
+        component: RouteView,
+        // redirect: '/article/createArticle',
+        meta: { title: '文章管理', icon: 'book', permission: ['table'] },
+        children: [
+          {
+            path: '/article/create',
+            name: 'CreateArticle',
+            component: () => import('@/views/article/CreateArticle'),
+            meta: { title: '新建文章', keepAlive: true, permission: ['table'] }
+          },
+          {
+            path: '/article/list',
+            name: 'ArticleList',
+            component: () => import('@/views/article/ArticleList'),
+            meta: { title: '文章列表', keepAlive: true, permission: ['table'] }
+          },
+          {
+            path: '/article/edit/:id',
+            name: 'EditArticle',
+            component: () => import('@/views/article/EditArticle'),
+            meta: { title: '编辑文章', keepAlive: true, permission: ['table'] },
+            hidden: true
+          }
+        ]
+      },
+      // 课程管理
+      {
+        path: '/course',
+        name: 'Course',
+        component: RouteView,
+        meta: { title: '课程管理', icon: 'slack', permission: ['table'] },
+        children: [
+          {
+            path: '/course/create',
+            name: 'CreateCourse',
+            component: () => import('@/views/course/CreateCourse'),
+            meta: { title: '新建课程', keepAlive: true, permission: ['table'] }
+          }
+        ]
+
       },
       // forms
       {
@@ -295,7 +340,7 @@ export const asyncRouterMap = [
                 meta: { title: '内联编辑表格', keepAlive: true }
               },
               {
-                path: '/other/list/user-list',
+                path: '/other/list/article',
                 name: 'UserList',
                 component: () => import('@/views/other/UserList'),
                 meta: { title: '用户列表', keepAlive: true }
@@ -361,6 +406,11 @@ export const constantRouterMap = [
             path: 'news',
             name: 'news',
             component: () => import('@/views/user/News')
+          },
+          {
+            path: 'newsDetail/:id',
+            name: 'NewsDetail',
+            component: () => import('@/views/user/NewsDetail')
           },
           {
             path: 'personCenter',
