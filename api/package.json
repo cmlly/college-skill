@@ -30,6 +30,7 @@
     "cache-manager": "^3.4.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "fundebug-nodejs": "^0.2.0",
     "handlebars": "^4.7.7",
     "log4js": "^6.3.0",
     "mysql2": "^2.2.5",

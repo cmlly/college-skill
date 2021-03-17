@@ -78,6 +78,19 @@ export const asyncRouterMap = [
             name: 'CreateCourse',
             component: () => import('@/views/course/CreateCourse'),
             meta: { title: '新建课程', keepAlive: true, permission: ['table'] }
+          },
+          {
+            path: '/course/list',
+            name: 'CourseList',
+            component: () => import('@/views/course/CourseList'),
+            meta: { title: '课程列表', keepAlive: true, permission: ['table'] }
+          },
+          {
+            path: '/course/edit/:id',
+            name: 'EditCourse',
+            component: () => import('@/views/course/EditCourse'),
+            meta: { title: '编辑课程', keepAlive: true, permission: ['table'] },
+            hidden: true
           }
         ]
 
@@ -400,17 +413,22 @@ export const constantRouterMap = [
           {
             path: 'course',
             name: 'course',
-            component: () => import('@/views/user/Course')
+            component: () => import('@/views/user/course/Course')
+          },
+          {
+            path: 'courseContent/:id',
+            name: 'courseContent',
+            component: () => import('@/views/user/course/CourseContent')
           },
           {
             path: 'news',
             name: 'news',
-            component: () => import('@/views/user/News')
+            component: () => import('@/views/user/news/News')
           },
           {
             path: 'newsDetail/:id',
             name: 'NewsDetail',
-            component: () => import('@/views/user/NewsDetail')
+            component: () => import('@/views/user/news/NewsDetail')
           },
           {
             path: 'personCenter',

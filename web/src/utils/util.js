@@ -93,3 +93,39 @@ export function scorePassword (pass) {
 
   return parseInt(score)
 }
+
+// 格式化JSON
+export function jsonStringfy (data, param) {
+  return JSON.stringify(data, (key, val) => {
+    if (key === param) {
+      return btoa(encodeURI(val))
+    }
+    return val
+  })
+}
+
+// 解析JSON
+export function jsonParse (data, param) {
+  return JSON.parse(data, (key, val) => {
+    if (key === param) {
+        return decodeURI(atob(val))
+    }
+    return val
+  })
+}
+
+// 倒计时
+export function countDown (date) {
+    const nowtime = new Date()
+    const endtime = new Date(date)
+    const lefttime = endtime.getTime() - nowtime.getTime()
+    const leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)) // 计算天数
+    const lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24) // 计算小时数
+    const leftm = Math.floor(lefttime / (1000 * 60) % 60) // 计算分钟数
+    const lefts = Math.floor(lefttime / 1000 % 60) // 计算秒数
+    if (leftd <= 0) {
+      return `${lefth}:${leftm}:${lefts}`
+    } else {
+      return `${leftd}天${lefth}:${leftm}:${lefts}`
+    }
+}

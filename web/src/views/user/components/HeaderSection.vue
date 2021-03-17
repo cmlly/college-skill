@@ -42,7 +42,9 @@
       </div>
     </header>
     <div style="padding: 113px 15vw 25px">
-      <router-view></router-view>
+      <div style="min-width: 1200px">
+        <router-view></router-view>
+      </div>
     </div>
     <footer-section style="padding: 30px 15vw"></footer-section>
   </div>

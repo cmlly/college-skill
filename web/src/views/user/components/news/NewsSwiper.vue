@@ -1,5 +1,15 @@
 <template>
-  <a-carousel autoplay draggable>
+  <a-carousel autoplay draggable arrows>
+    <div
+      slot="prevArrow"
+      class="custom-slick-arrow"
+      style="left: 10px;zIndex: 1"
+    >
+      <a-icon type="left-circle" />
+    </div>
+    <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
+      <a-icon type="right-circle" />
+    </div>
     <div>
       <img style="width: 100%;height: 100%" src="../../../../assets/news/swiper1.jpg" alt="">
     </div>
@@ -29,14 +39,20 @@
 
 <style scoped>
   .ant-carousel >>> .slick-slide {
-    /*text-align: center;*/
     height: 400px;
-    /*line-height: 500px;*/
-    /*background: #FF8604;*/
-    /*overflow: hidden;*/
   }
-
-  .ant-carousel >>> .slick-slide h3 {
+  .ant-carousel >>> .custom-slick-arrow {
+    width: 50px;
+    height: 50px;
+    font-size: 50px;
     color: #fff;
+    background-color: rgba(31, 45, 61, 0.11);
+    opacity: 0.3;
+  }
+  .ant-carousel >>> .custom-slick-arrow:before {
+    display: none;
+  }
+  .ant-carousel >>> .custom-slick-arrow:hover {
+    opacity: 0.5;
   }
 </style>

@@ -180,10 +180,9 @@
   import FooterToolBar from '@/components/FooterToolbar'
   import { baseMixin } from '@/store/app-mixin'
   // import WangEditor from '@/components/Editor/WangEditor'
-  import { fetchCreateArticle } from '@/api/article'
-  import { fetchCourseClassify, fetchCreateCourse } from '@/api/course'
+  import { fetchCourseClassify, fetchCourseDetail, fetchEditCourse } from '@/api/course'
   import QuillEditor from '@/components/Editor/QuillEditor'
-  import { jsonStringfy } from '@/utils/util'
+  import { jsonParse, jsonStringfy } from '@/utils/util'
 
   function getBase64 (img, callback) {
     const reader = new FileReader()
@@ -192,7 +191,7 @@
   }
 
   export default {
-    name: 'CreateCourse',
+    name: 'EditCourse',
     mixins: [baseMixin],
     components: {
       FooterToolBar,
@@ -249,8 +248,18 @@
     },
     created () {
       this.getClassify()
+      this.getCourseDetail()
     },
     methods: {
+      // 获取数据回显数据
+      async getCourseDetail () {
+        const res = await fetchCourseDetail({ id: this.$route.params.id })
+        this.form = res.result
+        this.form.learnNum = res.result.learn_num
+        this.form.createBy = res.result.create_by
+        this.data = jsonParse(res.result.content, 'content')
+        // console.log(JSON.parse(res.result.content))
+      },
       handleSubmit (e) {
         e.preventDefault()
       },
@@ -319,15 +328,14 @@
            }
          }
       },
-
       // 最终全页面提交
       validate () {
         this.$refs.ruleForm.validate(async valid => {
           if (valid) {
             this.form.content = jsonStringfy(this.data, 'content')
-            await fetchCreateCourse(this.form)
+            await fetchEditCourse(this.form)
             this.$router.push('/course/list')
-            this.$message.success('新增课程成功')
+            this.$message.success('提交成功')
           } else {
             this.$message.error('请检查是否有未填选项')
           }
@@ -367,19 +375,6 @@
       async getClassify () {
         const res = await fetchCourseClassify()
         this.classifyOptions = res.result.classify
-      },
-      onSubmit () {
-        this.$refs.ruleForm.validate(async valid => {
-          if (valid) {
-            await fetchCreateArticle(this.form)
-            this.$message.success('新增成功')
-            await this.$router.push('/article/list')
-            this.form = {}
-          } else {
-            this.$message.error('新增失败')
-            return false
-          }
-        })
       },
       resetForm () {
         this.$refs.ruleForm.resetFields()

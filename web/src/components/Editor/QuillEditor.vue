@@ -64,6 +64,9 @@
         }
       }
     },
+    created () {
+      this.content = this.value
+    },
     methods: {
       onEditorBlur (quill) {
         // console.log('editor blur!', quill)
