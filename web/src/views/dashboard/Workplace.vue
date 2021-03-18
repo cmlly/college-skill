@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <div class="content-title">
-            {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
+            {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ user.welcome }}</span>
           </div>
           <div>士志于道，而耻恶衣恶食者，未足与议也。</div>
         </div>
@@ -29,17 +29,16 @@
 
     <div>
       <a-row :gutter="24">
-        <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
+        <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
           <a-card
             class="project-list"
-            :loading="loading"
             style="margin-bottom: 24px;"
             :bordered="false"
-            title="进行中的项目"
+            title="进行中的课程"
             :body-style="{ padding: 0 }">
-            <a slot="extra">全部项目</a>
+            <router-link slot="extra" to="/course/list">全部课程</router-link>
             <div>
-              <a-card-grid class="project-card-grid" :key="i" v-for="(item, i) in projects">
+              <a-card-grid class="project-card-grid" :key="i" v-for="(item, i) of projects">
                 <a-card :bordered="false" :body-style="{ padding: 0 }">
                   <a-card-meta>
                     <div slot="title" class="card-title">
@@ -51,7 +50,7 @@
                     </div>
                   </a-card-meta>
                   <div class="project-item">
-                    <a href="/#/">科学搬砖组</a>
+                    <a>小楚</a>
                     <span class="datetime">9小时前</span>
                   </div>
                 </a-card>
@@ -59,7 +58,7 @@
             </div>
           </a-card>
 
-          <a-card :loading="loading" title="动态" :bordered="false">
+          <a-card title="动态" :bordered="false">
             <a-list>
               <a-list-item :key="index" v-for="(item, index) in activities">
                 <a-list-item-meta>
@@ -76,48 +75,6 @@
             </a-list>
           </a-card>
         </a-col>
-        <a-col
-          style="padding: 0 12px"
-          :xl="8"
-          :lg="24"
-          :md="24"
-          :sm="24"
-          :xs="24">
-          <a-card title="快速开始 / 便捷导航" style="margin-bottom: 24px" :bordered="false" :body-style="{padding: 0}">
-            <div class="item-group">
-              <a>操作一</a>
-              <a>操作二</a>
-              <a>操作三</a>
-              <a>操作四</a>
-              <a>操作五</a>
-              <a>操作六</a>
-              <a-button size="small" type="primary" ghost icon="plus">添加</a-button>
-            </div>
-          </a-card>
-          <a-card
-            title="XX 指数"
-            style="margin-bottom: 24px"
-            :loading="radarLoading"
-            :bordered="false"
-            :body-style="{ padding: 0 }">
-            <div style="min-height: 400px;">
-              <!-- :scale="scale" :axis1Opts="axis1Opts" :axis2Opts="axis2Opts"  -->
-              <radar :data="radarData"/>
-            </div>
-          </a-card>
-          <a-card :loading="loading" title="团队" :bordered="false">
-            <div class="members">
-              <a-row>
-                <a-col :span="12" v-for="(item, index) in teams" :key="index">
-                  <a>
-                    <a-avatar size="small" :src="item.avatar"/>
-                    <span class="member">{{ item.name }}</span>
-                  </a>
-                </a-col>
-              </a-row>
-            </div>
-          </a-card>
-        </a-col>
       </a-row>
     </div>
   </page-header-wrapper>
@@ -128,10 +85,9 @@ import { timeFix } from '@/utils/util'
 import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
+import activites, { doingList } from '@/views/dashboard/workplace'
 
-import { getRoleList, getServiceList } from '@/api/manage'
-
-const DataSet = require('@antv/data-set')
+// const DataSet = require('@antv/data-set')
 
 export default {
   name: 'Workplace',
@@ -143,12 +99,10 @@ export default {
     return {
       timeFix: timeFix(),
       avatar: '',
-      user: {},
-
-      projects: [],
+      projects: doingList,
       loading: true,
       radarLoading: true,
-      activities: [],
+      activities: activites,
       teams: [],
 
       // data
@@ -191,70 +145,72 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      nickname: (state) => state.user.nickname,
-      welcome: (state) => state.user.welcome
-    }),
-    ...mapState(['user']),
-    userInfo () {
-      return this.$store.getters.userInfo
-    }
+    ...mapState(['user'])
+    // ...mapState({
+    //   nickname: (state) => state.user.nickname,
+    //   welcome: (state) => state.user.welcome
+    // })
+    // userInfo () {
+    //   return this.$store.getters.userInfo
+    // }
   },
   created () {
-    this.user = this.userInfo
-    this.avatar = this.userInfo.avatar
+    this.projects = doingList
+    console.log(this.projects)
+    // this.user = this.userInfo
+    // this.avatar = this.userInfo.avatar
 
-    getRoleList().then(res => {
+    // getRoleList().then(res => {
       // console.log('workplace -> call getRoleList()', res)
-    })
+    // })
 
-    getServiceList().then(res => {
+    // getServiceList().then(res => {
       // console.log('workplace -> call getServiceList()', res)
-    })
+    // })
   },
   mounted () {
-    this.getProjects()
-    this.getActivity()
-    this.getTeams()
-    this.initRadar()
+    // this.getProjects()
+    // this.getActivity()
+    // this.getTeams()
+    // this.initRadar()
   },
   methods: {
-    getProjects () {
-      this.$http.get('/list/search/projects')
-        .then(res => {
-          this.projects = res.result && res.result.data
-          this.loading = false
-        })
-    },
-    getActivity () {
-      this.$http.get('/workplace/activity')
-        .then(res => {
-          this.activities = res.result
-        })
-    },
-    getTeams () {
-      this.$http.get('/workplace/teams')
-        .then(res => {
-          this.teams = res.result
-        })
-    },
-    initRadar () {
-      this.radarLoading = true
-
-      this.$http.get('/workplace/radar')
-        .then(res => {
-          const dv = new DataSet.View().source(res.result)
-          dv.transform({
-            type: 'fold',
-            fields: ['个人', '团队', '部门'],
-            key: 'user',
-            value: 'score'
-          })
-
-          this.radarData = dv.rows
-          this.radarLoading = false
-        })
-    }
+    // getProjects () {
+    //   this.$http.get('/list/search/projects')
+    //     .then(res => {
+    //       this.projects = res.result && res.result.data
+    //       this.loading = false
+    //     })
+    // },
+    // getActivity () {
+    //   this.$http.get('/workplace/activity')
+    //     .then(res => {
+    //       this.activities = res.result
+    //     })
+    // },
+    // getTeams () {
+    //   this.$http.get('/workplace/teams')
+    //     .then(res => {
+    //       this.teams = res.result
+    //     })
+    // },
+    // initRadar () {
+    //   this.radarLoading = true
+    //
+    //   this.$http.get('/workplace/radar')
+    //     .then(res => {
+    //       const dv = new DataSet.View().source(res.result)
+    //       dv.transform({
+    //         type: 'fold',
+    //         fields: ['个人', '团队', '部门'],
+    //         key: 'user',
+    //         value: 'score'
+    //       })
+    //
+    //       this.radarData = dv.rows
+    //       this.radarLoading = false
+    //     })
+    // }
   }
 }
 </script>

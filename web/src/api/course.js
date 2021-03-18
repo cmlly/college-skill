@@ -6,7 +6,9 @@ const api = {
   list: '/api/course/list',
   detail: '/api/course/detail',
   edit: '/api/course/edit',
-  delete: '/api/course/delete'
+  delete: '/api/course/delete',
+  choose: '/api/course/chooseCourse',
+  choseCourseList: '/api/course/choseCourseList'
 }
 
 export function fetchCourseClassify (data) {
@@ -52,6 +54,22 @@ export function fetchEditCourse (data) {
 export function fetchDeleteCourse (data) {
   return request({
     url: api.delete,
+    method: 'post',
+    data
+  })
+}
+
+export function fetchChooseCourse (data) {
+  return request({
+    url: api.choose,
+    method: 'post',
+    data
+  })
+}
+
+export function fetchChoseCourseList (data) {
+  return request({
+    url: api.choseCourseList,
     method: 'post',
     data
   })

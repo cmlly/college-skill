@@ -98,15 +98,15 @@ const activity = () => {
   return builder([{
     id: 1,
     user: {
-      nickname: '@name',
+      nickname: '楚金阁',
       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
     },
     project: {
-      name: '白鹭酱油开发组',
-      action: '更新',
-      event: '番组计划'
+      name: '电脑端',
+      action: '学习了',
+      event: 'Nodejs开发'
     },
-    time: '2018-08-23 14:47:00'
+    time: '2021-05-10 14:47:00'
   },
   {
     id: 1,

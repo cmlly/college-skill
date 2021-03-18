@@ -58,4 +58,11 @@ export class UserController {
   async getUserInfo(@Request() req) {
     return await this.userService.getUserInfo(req.user.email)
   }
+
+  // 获取用户列表
+  @UseGuards(AuthGuard('jwt'))
+  @Post('userList')
+  async getUserList(@Body() body) {
+    return await this.userService.getUserList(body)
+  }
 }

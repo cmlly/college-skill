@@ -155,5 +155,76 @@ export class CourseService {
     }
   }
 
-  
+  // 用户选择课程
+  async chooseCourse(body: any): Promise<any> {
+    const { username } =  body.user;
+    const { cid, courseTitle, author, classify  } = body.body;
+    const hasChose = await this.hasChose({ username, cid })
+    if(hasChose) {
+      return {
+        code: 200,
+        msg: '已经选过这个课程，直接进入学习'
+      }
+    }else {
+      const sql = `
+        INSERT INTO user_course
+          (uid, cid, course_title, author, classify)
+        VALUES
+          ('${username}', ${cid}, '${courseTitle}', '${author}', '${classify}')
+    `;
+      await sequelize.query(sql, { logging: false })
+      return {
+        code: 200,
+        msg: '选课成功'
+      }
+    }
+  }
+
+  // 判断用户是否已经选择某个课程
+  async hasChose(body:any): Promise<any> {
+    const { username, cid } =  body;
+    const sql = `
+      SELECT
+        *
+      FROM
+        user_course
+      WHERE
+        ( uid = '${username}' AND cid = ${cid} )
+    `;
+    try {
+      return (await sequelize.query(sql, {
+        type: Sequelize.QueryTypes.SELECT,
+        raw: true,
+        logging: true
+      })
+      )[0]
+    }catch (e) {
+      return void 0;
+    }
+  }
+
+  // 获取用户已经选择的课程
+  async choseCourseList(body: any): Promise<any> {
+    const { username } = body
+    const sql =`
+      SELECT
+        *
+      FROM
+        user_course
+      WHERE
+        uid = '${username}'
+    `;
+    const list = await sequelize.query(sql, {
+      type: Sequelize.QueryTypes.SELECT,
+      raw: true,
+      logging: false
+    });
+    return {
+      code: 200,
+      result: {
+        data: list
+      },
+      msg: '查询成功'
+    }
+  }
 }

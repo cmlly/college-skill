@@ -46,7 +46,7 @@
 </template>
 
 <script>
-  import { fetchCourseDetail } from '@/api/course'
+  import { fetchChooseCourse, fetchCourseDetail } from '@/api/course'
   import { jsonParse } from '@/utils/util'
 
   export default {
@@ -67,7 +67,9 @@
       },
       goStudy () {
         if (localStorage.getItem('Access-Token')) {
-            this.$router.push(`/user/login/courseDetail/${this.$route.params.id}`)
+            fetchChooseCourse({ cid: this.$route.params.id, courseTitle: this.detail.title, author: this.detail.create_by, classify: this.detail.classify }).then(() => {
+              this.$router.push(`/user/login/courseDetail/${this.$route.params.id}`)
+            })
         } else {
           this.$message.warning('请在登录后进行学习')
         }

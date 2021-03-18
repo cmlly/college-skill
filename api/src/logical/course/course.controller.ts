@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -38,5 +38,17 @@ export class CourseController {
   @UseGuards(AuthGuard('jwt'))
   async deleteCourse(@Body() body: any) {
     return await this.courseService.deleteCourse(body)
+  }
+
+  @Post('chooseCourse')
+  @UseGuards(AuthGuard('jwt'))
+  async chooseCourse(@Request() req) {
+    return await this.courseService.chooseCourse(req)
+  }
+
+  @Post('choseCourseList')
+  @UseGuards(AuthGuard('jwt'))
+  async choseCourseList(@Request() req) {
+    return await this.courseService.choseCourseList(req.user)
   }
 }

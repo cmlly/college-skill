@@ -178,4 +178,40 @@ export class UserService {
   }
 }
 
+  // 获取用户列表
+  async getUserList(body: any): Promise<any> {
+    const { pageIndex = 1, pageSize= 10, classify } = body;
+    const currentIndex = ( pageIndex - 1 ) * pageSize < 0 ? 0 : ( pageIndex - 1 ) * pageSize;
+    const sql =  `SELECT * FROM user LIMIT ${currentIndex}, ${pageSize}`
+    const list = await sequelize.query(sql, {
+      type: Sequelize.QueryTypes.SELECT,
+      raw: true,
+      logging: false
+    })
+    // 总条数
+    const countSql = `
+        SELECT
+          COUNT(*) AS total
+        FROM
+          course
+      `
+    const count: any = (
+      await sequelize.query(countSql, {
+        type: Sequelize.QueryTypes.SELECT,
+        raw: true,
+        logging: false
+      })
+    )[0]
+    return {
+      code: 200,
+      result: {
+        data: list,
+        total: count.total,
+        pageNo: pageIndex,
+        lastPageNo: Math.ceil(count.total / pageSize)
+      },
+      msg: '查询成功'
+    }
+  }
+
 }
